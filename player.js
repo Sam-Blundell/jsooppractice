@@ -1,3 +1,5 @@
+import { Sitting, Running, Jumping, Falling } from './playerStates.js';
+
 export default class Player {
     constructor(game) {
         this.game = game;
@@ -9,10 +11,21 @@ export default class Player {
         this.vVelocity = 0;
         this.weight = 1;
         this.image = document.getElementById('player');
+        this.frameX = 0;
+        this.frameY = 0;
         this.maxSpeed = 8;
         this.jumpPower = 28;
+        this.states = [
+            new Sitting(this),
+            new Running(this),
+            new Jumping(this),
+            new Falling(this),
+        ];
+        this.currentState = this.states[0];
+        this.currentState.enter();
     }
     update(input) {
+        this.currentState.handleInput(input);
         // horizontal movement
         this.x += this.hVelocity;
         if (input.includes('ArrowRight')) {
@@ -25,9 +38,6 @@ export default class Player {
         if (this.x < 0) this.x = 0;
         if (this.x > (this.game.width - this.width)) this.x = this.game.width - this.width;
         // vertical movement
-        if (input.includes('ArrowUp') && this.onGround()) {
-            this.vVelocity = -this.jumpPower;
-        }
         this.y += this.vVelocity;
         if (!this.onGround()) {
             this.vVelocity += this.weight;
@@ -37,9 +47,13 @@ export default class Player {
 
     }
     draw(context) {
-        context.drawImage(this.image, 0, 0, this.width, this.height, this.x, this.y, this.width, this.height);
+        context.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, this.width, this.height, this.x, this.y, this.width, this.height);
     }
     onGround() {
         return this.y >= this.game.height - this.height;
+    }
+    setState(state) {
+        this.currentState = this.states[state];
+        this.currentState.enter();
     }
 }
