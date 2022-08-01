@@ -11,6 +11,8 @@ window.addEventListener('load', function() {
         constructor(width, height) {
             this.width = width;
             this.height = height;
+            this.groundLevel = 50;
+            this.speed = 3;
             this.player = new Player(this);
             this.input = new InputHandler();
         }
