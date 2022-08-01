@@ -52,7 +52,7 @@ export class Running extends State {
             this.player.setState(states.SITTING, speeds.STILL);
         }
         if (input.includes('ArrowUp') && this.player.onGround()) {
-            this.player.setState(states.JUMPING, speeds.SLOW);
+            this.player.setState(states.JUMPING, speeds.FAST);
         }
     }
 }
@@ -75,7 +75,7 @@ export class Jumping extends State {
             this.player.maxSpeed = 8;
         };
         if (this.player.vVelocity >= 0) {
-            this.player.setState(states.FALLING, speeds.SLOW);
+            this.player.setState(states.FALLING, speeds.FAST);
         }
     }
 }
