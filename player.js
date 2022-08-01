@@ -6,7 +6,7 @@ export default class Player {
         this.width = 100;
         this.height = 91.3;
         this.x = 0;
-        this.y = game.height - this.height;
+        this.y = game.height - (this.height + this.game.groundLevel);
         this.hVelocity = 0;
         this.vVelocity = 0;
         this.weight = 1;
@@ -18,7 +18,7 @@ export default class Player {
         this.frameIntervalTime = 1000/this.fps;
         this.frameTimer = 0;
         this.maxSpeed = 8;
-        this.jumpPower = 28;
+        this.jumpPower = 26;
         this.states = [
             new Sitting(this),
             new Running(this),
@@ -61,7 +61,7 @@ export default class Player {
         context.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, this.width, this.height, this.x, this.y, this.width, this.height);
     }
     onGround() {
-        return this.y >= this.game.height - this.height;
+        return this.y >= this.game.height - (this.height + this.game.groundLevel);
     }
     setState(state) {
         this.currentState = this.states[state];
