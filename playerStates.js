@@ -32,7 +32,7 @@ export class Sitting extends State {
             this.player.setState(states.RUNNING, speeds.FAST);
         }
         if (input.includes('ArrowUp') && this.player.onGround()) {
-            this.player.setState(states.JUMPING, speeds.SLOW);
+            this.player.setState(states.JUMPING, speeds.FAST);
         }
     }
 }
