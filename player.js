@@ -13,6 +13,10 @@ export default class Player {
         this.image = document.getElementById('player');
         this.frameX = 0;
         this.frameY = 0;
+        this.maxFrame = 4;
+        this.fps = 20;
+        this.frameIntervalTime = 1000/this.fps;
+        this.frameTimer = 0;
         this.maxSpeed = 8;
         this.jumpPower = 28;
         this.states = [
@@ -24,7 +28,7 @@ export default class Player {
         this.currentState = this.states[0];
         this.currentState.enter();
     }
-    update(input) {
+    update(input, deltaTime) {
         this.currentState.handleInput(input);
         // horizontal movement
         this.x += this.hVelocity;
@@ -43,6 +47,13 @@ export default class Player {
             this.vVelocity += this.weight;
         } else {
             this.vVelocity = 0;
+        }
+        // animation logic
+        if (this.frameTimer > this.frameIntervalTime) {
+            this.frameX = (this.frameX + 1) % (this.maxFrame + 1);
+            this.frameTimer = 0;
+        } else {
+            this.frameTimer += deltaTime;
         }
 
     }
