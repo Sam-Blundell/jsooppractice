@@ -63,8 +63,9 @@ export default class Player {
     onGround() {
         return this.y >= this.game.height - (this.height + this.game.groundLevel);
     }
-    setState(state) {
+    setState(state, stateSpeed) {
         this.currentState = this.states[state];
+        this.game.speed = this.game.speedModifier * stateSpeed;
         this.currentState.enter();
     }
 }

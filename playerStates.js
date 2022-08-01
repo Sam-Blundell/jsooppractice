@@ -5,6 +5,12 @@ const states = {
     FALLING: 3,
 }
 
+const speeds = {
+    STILL: 0,
+    SLOW: 1,
+    FAST: 2,
+}
+
 class State {
     constructor(state) {
         this.state = state;
@@ -22,8 +28,12 @@ export class Sitting extends State {
         this.player.maxFrame = 4;
     }
     handleInput(input) {
-        if (input.includes('ArrowLeft') || input.includes('ArrowRight')) this.player.setState(states.RUNNING);
-        if (input.includes('ArrowUp') && this.player.onGround()) this.player.setState(states.JUMPING);
+        if (input.includes('ArrowLeft') || input.includes('ArrowRight')) {
+            this.player.setState(states.RUNNING, speeds.FAST);
+        }
+        if (input.includes('ArrowUp') && this.player.onGround()) {
+            this.player.setState(states.JUMPING, speeds.SLOW);
+        }
     }
 }
 
@@ -38,8 +48,12 @@ export class Running extends State {
         this.player.maxFrame = 8;
     }
     handleInput(input) {
-        if (input.includes('ArrowDown')) this.player.setState(states.SITTING);
-        if (input.includes('ArrowUp') && this.player.onGround()) this.player.setState(states.JUMPING);
+        if (input.includes('ArrowDown')) {
+            this.player.setState(states.SITTING, speeds.STILL);
+        }
+        if (input.includes('ArrowUp') && this.player.onGround()) {
+            this.player.setState(states.JUMPING, speeds.SLOW);
+        }
     }
 }
 
@@ -57,10 +71,12 @@ export class Jumping extends State {
     }
     handleInput(input) {
         if (this.player.onGround()) {
-            this.player.setState(states.RUNNING);
+            this.player.setState(states.RUNNING, speeds.FAST);
             this.player.maxSpeed = 8;
         };
-        if (this.player.vVelocity >= 0) this.player.setState(states.FALLING);
+        if (this.player.vVelocity >= 0) {
+            this.player.setState(states.FALLING, speeds.SLOW);
+        }
     }
 }
 
@@ -76,7 +92,7 @@ export class Falling extends State {
     }
     handleInput(input) {
         if (this.player.onGround()) {
-            this.player.setState(states.RUNNING);
+            this.player.setState(states.RUNNING, speeds.FAST);
             this.player.maxSpeed = 8;
         };
     }
