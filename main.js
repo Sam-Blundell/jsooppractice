@@ -18,17 +18,19 @@ window.addEventListener('load', function() {
             this.speedModifier = 2;
             this.enemyInterval = 1500;
             this.enemyTimer = 0;
+            this.score = 0;
+            this.debug = false;
             this.background = new Background(this);
             this.player = new Player(this);
             this.enemies = [];
-            this.input = new InputHandler();
+            this.input = new InputHandler(this);
         }
         update(deltaTime) {
             this.background.update();
             this.player.update(this.input.keys, deltaTime); 
             this.enemies.forEach(enemy => {
                 if (enemy.markedForDeletion) {
-                    this.enemies.splice(this.enemies.indexOf(enemy), 1);
+                    this.enemies = this.enemies.filter(enemy => enemy.markedForDeletion === false);
                 } else {
                     enemy.update(deltaTime);
                 }
