@@ -48,17 +48,19 @@ window.addEventListener('load', function() {
                     this.particles = this.particles.filter(particle => particle.markedForDeletion === false);
                 }
             })
-            console.log(this.particles);
+            if (this.particles.length > 50) {
+                this.particles = this.particles.slice(0, 50);
+            }
         }
         draw(context) {
             this.background.draw(context);
-            this.player.draw(context);
             this.enemies.forEach(enemy => {
                 enemy.draw(context);
             })
             this.particles.forEach(particle => {
                 particle.draw(context);
             })
+            this.player.draw(context);
             this.ui.draw(context);
         }
         addEnemy(deltaTime) {
