@@ -35,9 +35,9 @@ export default class Player {
         this.currentState.handleInput(input);
         // horizontal movement
         this.x += this.hVelocity;
-        if (input.includes('ArrowRight')) {
+        if (input.includes('ArrowRight') && this.currentState !== this.states[6]) {
             this.hVelocity = this.maxSpeed;
-        } else if (input.includes('ArrowLeft')) {
+        } else if (input.includes('ArrowLeft') && this.currentState !== this.states[6]) {
             this.hVelocity = -this.maxSpeed;
         } else {
             this.hVelocity = 0;
@@ -88,8 +88,10 @@ export default class Player {
                 this.game.collisions.push(new CollisionAnimation(this.game, enemy.x, enemy.y));
                 if (this.currentState === this.states[4] || this.currentState === this.states[5]) {
                     this.game.score++;
+                    this.game.energy += 30;
                 } else {
                     this.currentState === this.setState(6, 0);
+                    this.game.currentLives--;
                 }
             }
         })

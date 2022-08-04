@@ -39,7 +39,7 @@ export class Sitting extends State {
         if (input.includes('ArrowUp') && this.game.player.onGround()) {
             this.game.player.setState(states.JUMPING, speeds.FAST);
         }
-        if (input.includes('Enter')) {
+        if (input.includes(' ')) {
             this.game.player.setState(states.ROLLING, speeds.FAST);
         }
     }
@@ -62,7 +62,7 @@ export class Running extends State {
         if (input.includes('ArrowUp') && this.game.player.onGround()) {
             this.game.player.setState(states.JUMPING, speeds.FAST);
         }
-        if (input.includes('Enter')) {
+        if (input.includes(' ')) {
             this.game.player.setState(states.ROLLING, speeds.FAST);
         }
    }
@@ -87,7 +87,7 @@ export class Jumping extends State {
         if (this.game.player.vVelocity >= 0) {
             this.game.player.setState(states.FALLING, speeds.FAST);
         }
-        if (input.includes('Enter')) {
+        if (input.includes(' ')) {
             this.game.player.setState(states.ROLLING, speeds.FAST);
         }
         if (input.includes('ArrowDown')) {
@@ -127,8 +127,9 @@ export class Rolling extends State {
         this.game.player.maxFrame = 6;
     }
     handleInput(input) {
+        this.game.energy--;
         this.game.particles.unshift(new Fire(this.game, this.game.player.x + 10, this.game.player.y - 10));
-        if (!input.includes('Enter')) {
+        if (!input.includes(' ')) {
             if (this.game.player.onGround()) {
                 this.game.player.setState(states.RUNNING, speeds.FAST);
             } else {
@@ -159,7 +160,7 @@ export class Diving extends State {
             for (let i = 0; i < 30; i++) {
                 this.game.particles.push(new Splash(this.game, this.game.player.x, this.game.player.y));
             }
-            if (input.includes('Enter')) {
+            if (input.includes(' ')) {
                 this.game.player.setState(states.ROLLING, speeds.FAST);
             } else {
                 this.game.player.setState(states.RUNNING, speeds.FAST);

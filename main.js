@@ -8,7 +8,7 @@ import CollisionAnimation from './collisionAnimation.js';
 window.addEventListener('load', function() {
     const canvas = document.getElementById('canvas1');
     const ctx = canvas.getContext('2d');
-    canvas.width = 500;
+    canvas.width = 900;
     canvas.height = 500;
 
     class Game {
@@ -18,9 +18,13 @@ window.addEventListener('load', function() {
             this.groundLevel = 82;
             this.speed = 0;
             this.speedModifier = 2;
-            this.enemyInterval = 1500;
+            this.enemyInterval = 1000;
             this.enemyTimer = 0;
             this.score = 0;
+            this.targetScore = 25;
+            this.maxLives = 5;
+            this.currentLives = this.maxLives;
+            this.energy = 100;
             this.fontColor = 'black';
             this.debug = false;
             this.background = new Background(this);
@@ -30,10 +34,17 @@ window.addEventListener('load', function() {
             this.ui = new UI(this);
             this.particles = [];
             this.collisions = [];
+            this.gameTime = 0;
+            this.maxTime = 30000;
+            this.gameOver = false;
             this.player.currentState = this.player.states[0];
             this.player.currentState.enter();
         }
         update(deltaTime) {
+            this.gameTime += deltaTime;
+            if (this.gameTime > this.maxTime) {
+                this.gameOver = true;
+            }
             this.background.update();
             this.player.update(this.input.keys, deltaTime); 
             this.enemies.forEach(enemy => {
@@ -51,7 +62,7 @@ window.addEventListener('load', function() {
                 }
             })
             if (this.particles.length > 50) {
-                this.particles = this.particles.slice(0, 50);
+                this.particles.length = 50;
             }
             this.collisions.forEach(collision => {
                 if (collision.markedForDeletion) {
@@ -60,7 +71,9 @@ window.addEventListener('load', function() {
                     collision.update(deltaTime);
                 }
             })
-            console.log(this.collisions);
+            if (this.currentLives <= 0 || this.energy <= 0) {
+                this.gameOver = true;
+            }
         }
         draw(context) {
             this.background.draw(context);
@@ -101,7 +114,10 @@ window.addEventListener('load', function() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         game.update(deltaTime);
         game.draw(ctx);
-        requestAnimationFrame(animate);
+        console.log(game.gameOver);
+        if (game.gameOver === false) {
+            requestAnimationFrame(animate);
+        }
     }
     animate(0);
 })

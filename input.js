@@ -1,7 +1,7 @@
 export default class InputHandler {
     constructor(game) {
         this.game = game;
-        this.validKeys = ['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Enter'];
+        this.validKeys = ['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', ' '];
         this.keys = [];
         window.addEventListener('keydown', e => {
             if (this.validKeys.includes(e.key) && !this.keys.includes(e.key)) {
