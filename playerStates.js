@@ -152,15 +152,16 @@ export class Diving extends State {
         this.game.player.frameX = 0;
         this.game.player.frameY = 6;
         this.game.player.maxFrame = 6;
+        this.game.player.vVelocity = 15;
     }
     handleInput(input) {
-        this.game.particles.unshift(new Fire(this.game, this.game.player.x + 10, this.game.player.y - 10));
         if (this.game.player.onGround()) {
-            if (input.includes('enter')) {
+            if (input.includes('Enter')) {
                 this.game.player.setState(states.ROLLING, speeds.FAST);
             } else {
                 this.game.player.setState(states.RUNNING, speeds.FAST);
             }
         }
+        this.game.particles.unshift(new Fire(this.game, this.game.player.x + 10, this.game.player.y - 10));
     };
 }

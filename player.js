@@ -49,6 +49,9 @@ export default class Player {
         } else {
             this.vVelocity = 0;
         }
+        if (this.y > this.game.height - (this.height + this.game.groundLevel)) {
+            this.y = this.game.height - (this.height + this.game.groundLevel);
+        }
         // animation logic
         if (this.frameTimer > this.frameIntervalTime) {
             this.frameX = (this.frameX + 1) % (this.maxFrame + 1);
