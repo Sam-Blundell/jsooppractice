@@ -1,4 +1,4 @@
-import { Sitting, Running, Jumping, Falling, Rolling, Diving } from './playerStates.js';
+import { Sitting, Running, Jumping, Falling, Rolling, Diving, Hit } from './playerStates.js';
 
 export default class Player {
     constructor(game) {
@@ -26,6 +26,7 @@ export default class Player {
             new Falling(this.game),
             new Rolling(this.game),
             new Diving(this.game),
+            new Hit(this.game),
         ];
     }
     update(input, deltaTime) {
@@ -83,7 +84,11 @@ export default class Player {
                 (enemy.y + enemy.height) >= this.y 
             ) {
                 enemy.markedForDeletion = true;
-                this.game.score += 1;
+                if (this.currentState === this.states[4] || this.currentState === this.states[5]) {
+                    this.game.score++;
+                } else {
+                    this.currentState === this.setState(6, 0);
+                }
             }
         })
     }
