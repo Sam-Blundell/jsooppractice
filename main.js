@@ -27,6 +27,9 @@ window.addEventListener('load', function() {
             this.enemies = [];
             this.input = new InputHandler(this);
             this.ui = new UI(this);
+            this.particles = [];
+            this.player.currentState = this.player.states[0];
+            this.player.currentState.enter();
         }
         update(deltaTime) {
             this.background.update();
@@ -39,12 +42,22 @@ window.addEventListener('load', function() {
                 }
             })
             this.addEnemy(deltaTime);
+            this.particles.forEach(particle => {
+                particle.update();
+                if (particle.markedForDeletion) {
+                    this.particles = this.particles.filter(particle => particle.markedForDeletion === false);
+                }
+            })
+            console.log(this.particles);
         }
         draw(context) {
             this.background.draw(context);
             this.player.draw(context);
             this.enemies.forEach(enemy => {
                 enemy.draw(context);
+            })
+            this.particles.forEach(particle => {
+                particle.draw(context);
             })
             this.ui.draw(context);
         }
