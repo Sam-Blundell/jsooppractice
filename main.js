@@ -3,6 +3,7 @@ import InputHandler from './input.js';
 import Background from './background.js';
 import { FlyingEnemy, GroundEnemy, ClimbingEnemy } from './enemies.js';
 import UI from './ui.js';
+import CollisionAnimation from './collisionAnimation.js';
 
 window.addEventListener('load', function() {
     const canvas = document.getElementById('canvas1');
@@ -28,6 +29,7 @@ window.addEventListener('load', function() {
             this.input = new InputHandler(this);
             this.ui = new UI(this);
             this.particles = [];
+            this.collisions = [];
             this.player.currentState = this.player.states[0];
             this.player.currentState.enter();
         }
@@ -51,6 +53,14 @@ window.addEventListener('load', function() {
             if (this.particles.length > 50) {
                 this.particles = this.particles.slice(0, 50);
             }
+            this.collisions.forEach(collision => {
+                if (collision.markedForDeletion) {
+                    this.collisions = this.collisions.filter(collision => collision.markedForDeletion === false);
+                } else {
+                    collision.update(deltaTime);
+                }
+            })
+            console.log(this.collisions);
         }
         draw(context) {
             this.background.draw(context);
@@ -59,6 +69,9 @@ window.addEventListener('load', function() {
             })
             this.particles.forEach(particle => {
                 particle.draw(context);
+            })
+            this.collisions.forEach(collision => {
+                collision.draw(context);
             })
             this.player.draw(context);
             this.ui.draw(context);

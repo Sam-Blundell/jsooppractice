@@ -1,3 +1,4 @@
+import CollisionAnimation from './collisionAnimation.js';
 import { Sitting, Running, Jumping, Falling, Rolling, Diving, Hit } from './playerStates.js';
 
 export default class Player {
@@ -84,6 +85,7 @@ export default class Player {
                 (enemy.y + enemy.height) >= this.y 
             ) {
                 enemy.markedForDeletion = true;
+                this.game.collisions.push(new CollisionAnimation(this.game, enemy.x, enemy.y));
                 if (this.currentState === this.states[4] || this.currentState === this.states[5]) {
                     this.game.score++;
                 } else {
